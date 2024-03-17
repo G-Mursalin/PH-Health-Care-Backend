@@ -1,7 +1,7 @@
-import express, { Request, Response } from "express";
+import { Router } from "express";
 import { userControllers } from "./user.controller";
 
-const router = express.Router();
+const router = Router();
 
 router.post("/", userControllers.createAdmin);
 

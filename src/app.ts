@@ -1,7 +1,8 @@
-import express, { Application } from "express";
 import cors from "cors";
-import { userRoutes } from "./app/modules/User/user.routes";
-import { adminRoutes } from "./app/modules/Admin/admin.routes";
+import express, { Application, NextFunction, Request, Response } from "express";
+import globalErrorHandler from "./app/middlewares/globalErrorHandler";
+import router from "./app/routes";
+import { StatusCodes } from "http-status-codes";
 
 // Global Middlewares
 const app: Application = express();
@@ -9,13 +10,29 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// All routers
-app.use("/api/v1/user", userRoutes);
-app.use("/api/v1/admin", adminRoutes);
+// App routers
+app.use("/api/v1", router);
 
-// Health check route
-app.get("/health", (req, res, next) => {
-  res.send({ message: "server is running" });
+// Global Error Handler
+app.use(globalErrorHandler);
+
+// Check Health of The Server
+app.get("/health", (req: Request, res: Response, next: NextFunction) => {
+  res
+    .status(StatusCodes.OK)
+    .json({ success: true, message: "Server is running" });
+});
+
+// Handle Not Found Route
+app.use("*", (req: Request, res: Response, next: NextFunction) => {
+  res.status(StatusCodes.NOT_FOUND).json({
+    success: false,
+    message: "API not found",
+    error: {
+      path: req.originalUrl,
+      message: "Your requested path is not found",
+    },
+  });
 });
 
 export default app;

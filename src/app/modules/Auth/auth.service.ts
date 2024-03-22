@@ -3,6 +3,8 @@ import * as bcrypt from "bcrypt";
 import prisma from "../../../shared/prisma";
 import { jwtHelpers } from "./../../../helpers/jwtHelpers";
 import config from "../../../config";
+import AppError from "../../errors/AppError";
+import { StatusCodes } from "http-status-codes";
 
 // Login User
 const loginUser = async (payload: { email: string; password: string }) => {
@@ -81,7 +83,44 @@ const refreshToken = async (token: string) => {
   };
 };
 
+// Change Password
+const changePassword = async (user: any, payload: any) => {
+  const userData = await prisma.user.findUniqueOrThrow({
+    where: {
+      email: user.email,
+      status: UserStatus.ACTIVE,
+    },
+  });
+
+  const isCorrectPassword: boolean = await bcrypt.compare(
+    payload.oldPassword,
+    userData.password
+  );
+
+  if (!isCorrectPassword) {
+    throw new AppError(StatusCodes.UNAUTHORIZED, "Incorrect old password");
+  }
+
+  const hashedNewPassword: string = await bcrypt.hash(
+    payload.newPassword,
+    Number(config.bcrypt_salt)
+  );
+
+  await prisma.user.update({
+    where: {
+      email: userData.email,
+    },
+    data: {
+      password: hashedNewPassword,
+      needPasswordChange: false,
+    },
+  });
+
+  return null;
+};
+
 export const authServices = {
   loginUser,
   refreshToken,
+  changePassword,
 };

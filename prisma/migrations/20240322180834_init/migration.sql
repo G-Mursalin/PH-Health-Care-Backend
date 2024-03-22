@@ -2,7 +2,7 @@
 CREATE TYPE "UserRole" AS ENUM ('SUPER_ADMIN', 'ADMIN', 'DOCTOR', 'PATIENT');
 
 -- CreateEnum
-CREATE TYPE "UserStatus" AS ENUM ('ACTIVE', 'BLOCKED');
+CREATE TYPE "UserStatus" AS ENUM ('ACTIVE', 'BLOCKED', 'DELETED');
 
 -- CreateTable
 CREATE TABLE "users" (

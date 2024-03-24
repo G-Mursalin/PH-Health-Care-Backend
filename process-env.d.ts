@@ -15,5 +15,8 @@ declare namespace NodeJS {
     SMTP_PORT: number;
     TRANSPORTER_EMAIL_AUTH_USER: string;
     TRANSPORTER_EMAIL_AUTH_PASSWORD: string;
+    CLOUDINARY_CLOUD_NAME: string;
+    CLOUDINARY_API_KEY: string;
+    CLOUDINARY_API_SECRET: string;
   };
 }

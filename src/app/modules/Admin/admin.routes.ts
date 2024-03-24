@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { adminControllers } from "./admin.controller";
 import validateRequest from "../../middlewares/validateRequest";
-import { adminValidationSchemas } from "./admin.validations";
+import { adminValidators } from "./admin.validation";
 import auth from "../../middlewares/auth";
 import { UserRole } from "@prisma/client";
 
@@ -21,7 +21,7 @@ router
   .patch(
     "/:id",
     auth(UserRole.ADMIN, UserRole.SUPER_ADMIN),
-    validateRequest(adminValidationSchemas.updateAdmin),
+    validateRequest(adminValidators.updateAdminSchema),
     adminControllers.updateAdmin
   )
   .delete(

@@ -18,6 +18,23 @@ const createSpecialty = async (req: Request) => {
   return result;
 };
 
+// Get all Specialties
+const getAllSpecialties = async () => {
+  return await prisma.specialties.findMany();
+};
+
+// Delete Specialty
+const deleteSpecialty = async (id: string) => {
+  const result = await prisma.specialties.delete({
+    where: {
+      id,
+    },
+  });
+  return result;
+};
+
 export const specialtyServices = {
   createSpecialty,
+  getAllSpecialties,
+  deleteSpecialty,
 };

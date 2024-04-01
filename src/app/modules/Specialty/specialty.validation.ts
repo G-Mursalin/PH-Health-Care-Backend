@@ -1,8 +1,10 @@
 import { z } from "zod";
 
 const createSpecialtySchema = z.object({
-  title: z.string({
-    required_error: "Title is required!",
+  body: z.object({
+    title: z.string({
+      required_error: "Title is required!",
+    }),
   }),
 });
 

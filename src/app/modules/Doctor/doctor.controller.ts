@@ -1,12 +1,10 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import catchAsync from "../../../helpers/catchAsync";
-import sendResponse from "../../../shared/sendResponse";
-import { doctorServices } from "./doctor.service";
 import pick from "../../../shared/pick";
+import sendResponse from "../../../shared/sendResponse";
 import { doctorFilterableFields } from "./doctor.constants";
-import { Doctor, UserStatus } from "@prisma/client";
-import prisma from "../../../shared/prisma";
+import { doctorServices } from "./doctor.service";
 
 // Get All Doctors
 const getAllDoctors = catchAsync(async (req: Request, res: Response) => {

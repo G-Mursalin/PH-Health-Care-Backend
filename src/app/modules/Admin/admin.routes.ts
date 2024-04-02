@@ -30,7 +30,7 @@ router
     adminControllers.deleteAdmin
   )
   .delete(
-    "/soft-delete/:id",
+    "/soft/:id",
     auth(UserRole.ADMIN, UserRole.SUPER_ADMIN),
     adminControllers.softDeleteAdmin
   );

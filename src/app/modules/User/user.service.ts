@@ -19,7 +19,8 @@ import { JwtPayload } from "jsonwebtoken";
 
 // Get All Users
 const getAllUsers = async (params: any, options: TPaginationOptions) => {
-  const { page, limit, skip } = paginationHelper.calculatePagination(options);
+  const { page, limit, skip, sortBy, sortOrder } =
+    paginationHelper.calculatePagination(options);
   const { searchTerm, ...filterData } = params;
 
   const andConditions: Prisma.UserWhereInput[] = [];
@@ -52,14 +53,9 @@ const getAllUsers = async (params: any, options: TPaginationOptions) => {
     where: whereConditions,
     skip,
     take: limit,
-    orderBy:
-      options.sortBy && options.sortOrder
-        ? {
-            [options.sortBy]: options.sortOrder,
-          }
-        : {
-            createdAt: "desc",
-          },
+    orderBy: {
+      [sortBy]: sortOrder,
+    },
     select: {
       id: true,
       email: true,

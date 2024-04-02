@@ -10,7 +10,8 @@ const getAllDoctors = async (
   filters: IDoctorFilterRequest,
   options: TPaginationOptions
 ) => {
-  const { limit, page, skip } = paginationHelper.calculatePagination(options);
+  const { limit, page, skip, sortBy, sortOrder } =
+    paginationHelper.calculatePagination(options);
   const { searchTerm, specialties, ...filterData } = filters;
 
   const andConditions: Prisma.DoctorWhereInput[] = [];
@@ -26,8 +27,8 @@ const getAllDoctors = async (
     });
   }
 
+  // Corrected specialties condition
   if (specialties && specialties.length > 0) {
-    // Corrected specialties condition
     andConditions.push({
       doctorSpecialties: {
         some: {
@@ -62,10 +63,7 @@ const getAllDoctors = async (
     where: whereConditions,
     skip,
     take: limit,
-    orderBy:
-      options.sortBy && options.sortOrder
-        ? { [options.sortBy]: options.sortOrder }
-        : { createdAt: "desc" },
+    orderBy: { [sortBy]: sortOrder },
     include: {
       doctorSpecialties: {
         include: {

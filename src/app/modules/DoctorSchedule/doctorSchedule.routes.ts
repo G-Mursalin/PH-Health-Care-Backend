@@ -7,13 +7,24 @@ import { doctorScheduleValidators } from "./doctorSchedule.validations";
 
 const router = Router();
 
-router.post(
-  "/",
-  auth(UserRole.DOCTOR),
-  validateRequest(
-    doctorScheduleValidators.createDoctorScheduleValidationSchema
-  ),
-  doctorScheduleControllers.createDoctorSchedule
-);
+router
+  .get(
+    "/my-schedule",
+    auth(UserRole.DOCTOR),
+    doctorScheduleControllers.getMySchedule
+  )
+  .post(
+    "/",
+    auth(UserRole.DOCTOR),
+    validateRequest(
+      doctorScheduleValidators.createDoctorScheduleValidationSchema
+    ),
+    doctorScheduleControllers.createDoctorSchedule
+  )
+  .delete(
+    "/:id",
+    auth(UserRole.DOCTOR),
+    doctorScheduleControllers.deleteMySchedule
+  );
 
 export const doctorScheduleRoutes = router;

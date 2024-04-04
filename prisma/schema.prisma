@@ -164,6 +164,9 @@ model DoctorSchedules {
 
   appointmentId String?
 
+  createdAt       DateTime          @default(now())
+  
+
   @@id([doctorId, scheduleId])
   @@map("doctor_schedules")
 }

@@ -7,7 +7,7 @@ const globalErrorHandler = (
   res: Response,
   next: NextFunction
 ) => {
-  res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+  res.status(error.statusCode || StatusCodes.INTERNAL_SERVER_ERROR).json({
     success: false,
     message: error.message || "Something went wrong",
     error: error,

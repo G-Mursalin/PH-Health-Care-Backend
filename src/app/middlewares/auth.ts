@@ -32,7 +32,7 @@ const auth = (...roles: string[]) => {
 
     // Check if user can access this route
     if (roles.length && !roles.includes(verifiedUser.role)) {
-      throw new AppError(StatusCodes.FORBIDDEN, "Forbidden");
+      throw new AppError(StatusCodes.FORBIDDEN, "Forbidden Access");
     }
 
     // Set user information to request object

@@ -5,6 +5,7 @@ import { paginationHelper } from "../../../helpers/paginationHelper";
 import { Prisma } from "@prisma/client";
 import AppError from "../../errors/AppError";
 import { StatusCodes } from "http-status-codes";
+import { IDoctorScheduleFilterRequest } from "./doctorSchedule.interfaces";
 
 // Create Doctor Schedule
 const createDoctorSchedule = async (
@@ -146,8 +147,82 @@ const deleteMySchedule = async (user: JwtPayload, scheduleId: string) => {
   return result;
 };
 
+// Get All Schedules
+const getAllSchedules = async (
+  filters: IDoctorScheduleFilterRequest,
+  options: TPaginationOptions
+) => {
+  const { limit, page, skip, sortBy, sortOrder } =
+    paginationHelper.calculatePagination(options);
+  const { searchTerm, ...filterData } = filters;
+
+  const andConditions = [];
+
+  // Search By Name
+  if (searchTerm) {
+    andConditions.push({
+      doctor: {
+        name: {
+          contains: searchTerm,
+          mode: "insensitive",
+        },
+      },
+    });
+  }
+
+  // Exact Filtering
+  if (Object.keys(filterData).length > 0) {
+    if (
+      typeof filterData.isBooked === "string" &&
+      filterData.isBooked === "true"
+    ) {
+      filterData.isBooked = true;
+    } else if (
+      typeof filterData.isBooked === "string" &&
+      filterData.isBooked === "false"
+    ) {
+      filterData.isBooked = false;
+    }
+    andConditions.push({
+      AND: Object.keys(filterData).map((key) => ({
+        [key]: {
+          equals: (filterData as any)[key],
+        },
+      })),
+    });
+  }
+
+  const whereConditions: any =
+    andConditions.length > 0 ? { AND: andConditions } : {};
+
+  const result = await prisma.doctorSchedules.findMany({
+    where: whereConditions,
+    include: {
+      doctor: true,
+      schedule: true,
+    },
+    skip,
+    take: limit,
+    orderBy: { [sortBy]: sortOrder },
+  });
+
+  const total = await prisma.doctorSchedules.count({
+    where: whereConditions,
+  });
+
+  return {
+    meta: {
+      total,
+      page,
+      limit,
+    },
+    data: result,
+  };
+};
+
 export const doctorScheduleServices = {
   createDoctorSchedule,
   getMySchedule,
   deleteMySchedule,
+  getAllSchedules,
 };

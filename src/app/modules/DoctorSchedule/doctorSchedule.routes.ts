@@ -9,6 +9,16 @@ const router = Router();
 
 router
   .get(
+    "/",
+    auth(
+      UserRole.SUPER_ADMIN,
+      UserRole.ADMIN,
+      UserRole.DOCTOR,
+      UserRole.PATIENT
+    ),
+    doctorScheduleControllers.getAllSchedules
+  )
+  .get(
     "/my-schedule",
     auth(UserRole.DOCTOR),
     doctorScheduleControllers.getMySchedule

@@ -7,10 +7,20 @@ const router = Router();
 
 router
   .get("/", auth(UserRole.DOCTOR), scheduleControllers.getAllSchedules)
+  .get(
+    "/:id",
+    auth(UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.DOCTOR),
+    scheduleControllers.getScheduleById
+  )
   .post(
     "/",
     auth(UserRole.SUPER_ADMIN, UserRole.ADMIN),
     scheduleControllers.createSchedule
+  )
+  .delete(
+    "/:id",
+    auth(UserRole.SUPER_ADMIN, UserRole.ADMIN),
+    scheduleControllers.deleteSchedule
   );
 
 export const scheduleRoutes = router;

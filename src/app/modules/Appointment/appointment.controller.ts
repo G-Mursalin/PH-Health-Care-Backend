@@ -3,7 +3,10 @@ import catchAsync from "../../../helpers/catchAsync";
 import { appointmentServices } from "./appointment.services";
 import sendResponse from "../../../shared/sendResponse";
 import { StatusCodes } from "http-status-codes";
+import pick from "../../../shared/pick";
+import { appointmentFilterableFields } from "./appointment.constants";
 
+// Create Appointment
 const createAppointment = catchAsync(async (req: Request, res: Response) => {
   const user = req.user;
 
@@ -17,4 +20,44 @@ const createAppointment = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-export const appointmentControllers = { createAppointment };
+// Get All Appointment For Patients and Doctors
+const getMyAppointment = catchAsync(async (req: Request, res: Response) => {
+  const user = req.user;
+  const filters = pick(req.query, ["status", "paymentStatus"]);
+  const options = pick(req.query, ["limit", "page", "sortBy", "sortOrder"]);
+
+  const result = await appointmentServices.getMyAppointment(
+    user,
+    filters,
+    options
+  );
+
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: "My Appointments retrieved successfully",
+    data: result,
+  });
+});
+
+// Get all Appointments
+const getAllAppointments = catchAsync(async (req: Request, res: Response) => {
+  const filters = pick(req.query, appointmentFilterableFields);
+  const options = pick(req.query, ["limit", "page", "sortBy", "sortOrder"]);
+
+  const result = await appointmentServices.getAllAppointments(filters, options);
+
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: "Appointments retrieval successfully",
+    meta: result.meta,
+    data: result.data,
+  });
+});
+
+export const appointmentControllers = {
+  createAppointment,
+  getMyAppointment,
+  getAllAppointments,
+};

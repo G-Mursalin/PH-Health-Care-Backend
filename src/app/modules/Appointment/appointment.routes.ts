@@ -7,11 +7,22 @@ import { appointmentValidations } from "./appointment.validations";
 
 const router = Router();
 
-router.post(
-  "/",
-  auth(UserRole.PATIENT),
-  validateRequest(appointmentValidations.createAppointmentSchema),
-  appointmentControllers.createAppointment
-);
+router
+  .get(
+    "/",
+    auth(UserRole.SUPER_ADMIN, UserRole.ADMIN),
+    appointmentControllers.getAllAppointments
+  )
+  .post(
+    "/",
+    auth(UserRole.PATIENT),
+    validateRequest(appointmentValidations.createAppointmentSchema),
+    appointmentControllers.createAppointment
+  )
+  .get(
+    "/my-appointment",
+    auth(UserRole.PATIENT, UserRole.DOCTOR),
+    appointmentControllers.getMyAppointment
+  );
 
 export const appointmentRoutes = router;

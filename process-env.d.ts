@@ -18,5 +18,12 @@ declare namespace NodeJS {
     CLOUDINARY_CLOUD_NAME: string;
     CLOUDINARY_API_KEY: string;
     CLOUDINARY_API_SECRET: string;
+    SSL_STORE_ID: string;
+    SSL_STORE_PASSWORD: string;
+    SSL_SUCCESS_URL: string;
+    SSL_CANCEL_URL: string;
+    SSL_FAIL_URL: string;
+    SSL_PAYMENT_API: string;
+    SSL_VALIDATION_API: string;
   };
 }

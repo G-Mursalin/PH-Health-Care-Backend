@@ -17,4 +17,15 @@ const initPayment = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-export const paymentControllers = { initPayment };
+const validatePayment = catchAsync(async (req: Request, res: Response) => {
+  const result = await paymentServices.validatePayment(req.query);
+
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: "Payment validate successfully",
+    data: result,
+  });
+});
+
+export const paymentControllers = { initPayment, validatePayment };

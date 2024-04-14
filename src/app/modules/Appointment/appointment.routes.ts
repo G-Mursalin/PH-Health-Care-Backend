@@ -23,6 +23,11 @@ router
     "/my-appointment",
     auth(UserRole.PATIENT, UserRole.DOCTOR),
     appointmentControllers.getMyAppointment
+  )
+  .patch(
+    "/status/:id",
+    auth(UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.DOCTOR),
+    appointmentControllers.updateAppointmentStatus
   );
 
 export const appointmentRoutes = router;

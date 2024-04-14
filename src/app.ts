@@ -4,6 +4,8 @@ import globalErrorHandler from "./app/middlewares/globalErrorHandler";
 import router from "./app/routes";
 import { StatusCodes } from "http-status-codes";
 import cookieParser from "cookie-parser";
+import cron from "node-cron";
+import { appointmentServices } from "./app/modules/Appointment/appointment.services";
 
 // Global Middlewares
 const app: Application = express();
@@ -17,6 +19,15 @@ app.use("/api/v1", router);
 
 // Global Error Handler
 app.use(globalErrorHandler);
+
+// Scheduled Functions
+cron.schedule("* * * * *", () => {
+  try {
+    appointmentServices.cancelUnpaidAppointments();
+  } catch (err) {
+    console.error(err);
+  }
+});
 
 // Check Health of The Server
 app.get("/health", (req: Request, res: Response, next: NextFunction) => {

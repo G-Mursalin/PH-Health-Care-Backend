@@ -1,11 +1,11 @@
-import express from "express";
+import { Router } from "express";
 import { UserRole } from "@prisma/client";
 import { prescriptionControllers } from "./prescription.controllers";
 import auth from "../../middlewares/auth";
 import validateRequest from "../../middlewares/validateRequest";
 import { prescriptionValidators } from "./prescription.validation";
 
-const router = express.Router();
+const router = Router();
 
 router
   .get(

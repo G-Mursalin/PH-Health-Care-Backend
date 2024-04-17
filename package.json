@@ -4,7 +4,8 @@
   "description": "This is the APIs backend application for PH Health Care Front End",
   "main": "server.js",
   "scripts": {
-    "dev": "ts-node-dev --respawn --transpile-only src/server.ts"
+    "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
+    "seed": "ts-node-dev --respawn --transpile-only prisma/seed.ts"
   },
   "keywords": [],
   "author": "",

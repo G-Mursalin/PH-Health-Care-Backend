@@ -6,6 +6,12 @@ import { JwtPayload } from "jsonwebtoken";
 import { TPaginationOptions } from "../../types/pagination";
 import { paginationHelper } from "../../../helpers/paginationHelper";
 
+// Convert Local Time to UTC Time formate
+const convertLocalDateTimeToUtcDateTime = async (date: Date) => {
+  const offset = date.getTimezoneOffset() * 60000;
+  return new Date(date.getTime() + offset);
+};
+
 // Create Schedule
 const createSchedule = async (payload: ISchedule): Promise<Schedule[]> => {
   const { startDate, endDate, startTime, endTime } = payload;
@@ -163,6 +169,9 @@ const getScheduleById = async (id: string): Promise<Schedule | null> => {
       id,
     },
   });
+
+  // console.log(result?.startDateTime.getHours() + ":" + result?.startDateTime.getMinutes())
+  // console.log(result?.startDateTime.getUTCHours() + ":" + result?.startDateTime.getUTCMinutes())
 
   return result;
 };

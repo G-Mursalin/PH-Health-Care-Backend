@@ -1,3 +1,4 @@
+import { metaRoutes } from "./../modules/Meta/meta.routes";
 import { Router } from "express";
 import { userRoutes } from "../modules/User/user.routes";
 import { adminRoutes } from "../modules/Admin/admin.routes";
@@ -62,6 +63,10 @@ const appRoutes = [
   {
     path: "/review",
     route: reviewRoutes,
+  },
+  {
+    path: "/meta",
+    route: metaRoutes,
   },
 ];
 

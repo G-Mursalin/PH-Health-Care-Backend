@@ -30,6 +30,7 @@ const deleteSpecialty = async (id: string) => {
       id,
     },
   });
+
   return result;
 };
 

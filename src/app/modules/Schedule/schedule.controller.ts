@@ -24,13 +24,18 @@ const getAllSchedules = catchAsync(async (req: Request, res: Response) => {
 
   const user = req.user;
 
-  const result = await scheduleServices.getAllSchedules(filters, options, user);
+  const { meta, data } = await scheduleServices.getAllSchedules(
+    filters,
+    options,
+    user
+  );
 
   sendResponse(res, {
     statusCode: StatusCodes.OK,
     success: true,
     message: "Schedules retrieved successfully",
-    data: result,
+    meta,
+    data,
   });
 });
 

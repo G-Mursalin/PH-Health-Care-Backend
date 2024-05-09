@@ -6,7 +6,11 @@ import { UserRole } from "@prisma/client";
 const router = Router();
 
 router
-  .get("/", auth(UserRole.DOCTOR), scheduleControllers.getAllSchedules)
+  .get(
+    "/",
+    auth(UserRole.DOCTOR, UserRole.ADMIN, UserRole.SUPER_ADMIN),
+    scheduleControllers.getAllSchedules
+  )
   .get(
     "/:id",
     auth(UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.DOCTOR),

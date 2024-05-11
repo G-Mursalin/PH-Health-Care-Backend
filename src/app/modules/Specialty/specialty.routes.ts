@@ -8,7 +8,6 @@ import { specialtyValidations } from "./specialty.validation";
 
 const router = Router();
 
-// auth(UserRole.ADMIN, UserRole.SUPER_ADMIN),
 router
   .get("/", specialtyControllers.getAllSpecialties)
   .post(
@@ -18,6 +17,7 @@ router
       req.body = JSON.parse(req.body.data);
       next();
     },
+    auth(UserRole.ADMIN, UserRole.SUPER_ADMIN),
     validateRequest(specialtyValidations.createSpecialtySchema),
     specialtyControllers.createSpecialty
   )

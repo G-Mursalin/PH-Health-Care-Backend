@@ -143,7 +143,7 @@ const forgotPassword = async (payload: { email: string }) => {
   // Generate link and send to email
   const resetLink =
     config.reset_password_ui_link +
-    `?userId=${userData.id}&token=${resetPassToken}`;
+    `?id=${userData.id}&token=${resetPassToken}`;
 
   const htmlForResetPasswordEmail = resetPasswordEmailHTMLTemplate(resetLink);
   sendEmail(userData.email, htmlForResetPasswordEmail);

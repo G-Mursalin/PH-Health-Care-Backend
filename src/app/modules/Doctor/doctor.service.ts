@@ -100,6 +100,7 @@ const getDoctorById = async (id: string): Promise<Doctor | null> => {
           specialities: true,
         },
       },
+      doctorSchedules: true,
     },
   });
 

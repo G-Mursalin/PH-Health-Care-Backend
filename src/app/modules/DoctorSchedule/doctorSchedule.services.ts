@@ -154,7 +154,7 @@ const getAllSchedules = async (
 ) => {
   const { limit, page, skip, sortBy, sortOrder } =
     paginationHelper.calculatePagination(options);
-  const { searchTerm, ...filterData } = filters;
+  const { searchTerm, startDateTime, endDateTime, ...filterData } = filters;
 
   const andConditions = [];
 
@@ -166,6 +166,26 @@ const getAllSchedules = async (
           contains: searchTerm,
           mode: "insensitive",
         },
+      },
+    });
+  }
+
+  // Search in range with startDateTime endDateTime
+  if (startDateTime && endDateTime) {
+    andConditions.push({
+      schedule: {
+        AND: [
+          {
+            startDateTime: {
+              gte: startDateTime,
+            },
+          },
+          {
+            endDateTime: {
+              lte: endDateTime,
+            },
+          },
+        ],
       },
     });
   }

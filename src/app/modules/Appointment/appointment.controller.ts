@@ -26,7 +26,7 @@ const getMyAppointment = catchAsync(async (req: Request, res: Response) => {
   const filters = pick(req.query, ["status", "paymentStatus"]);
   const options = pick(req.query, ["limit", "page", "sortBy", "sortOrder"]);
 
-  const result = await appointmentServices.getMyAppointment(
+  const { meta, data } = await appointmentServices.getMyAppointment(
     user,
     filters,
     options
@@ -36,7 +36,8 @@ const getMyAppointment = catchAsync(async (req: Request, res: Response) => {
     statusCode: StatusCodes.OK,
     success: true,
     message: "My Appointments retrieved successfully",
-    data: result,
+    meta,
+    data,
   });
 });
 
